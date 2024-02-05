@@ -5,4 +5,3 @@
   - `-2`는 yarn berry를 사용하겠다는 의미
   - `-w`는 workspace를 사용하겠다는 의미
 - `yarn add -D typescript`로 typescript 설치
-- `yarn plugin import typescript`로 typescript 플러그인 설치
