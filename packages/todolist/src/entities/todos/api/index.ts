@@ -1,7 +1,6 @@
 import { PageMeta } from "@/shared/types/api";
 import { CreateTodoDTO, Todo } from "../model";
-
-export const TodoBaseUrl = "https://dummyjson.com/todos";
+import { TodoBaseUrl } from "./const";
 
 export const getTodos = () => {
   return fetch(TodoBaseUrl).then((res) => res.json()) as Promise<
