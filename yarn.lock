@@ -904,31 +904,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"app1@workspace:packages/app1":
-  version: 0.0.0-use.local
-  resolution: "app1@workspace:packages/app1"
-  dependencies:
-    "@types/react": "npm:^18.2.43"
-    "@types/react-dom": "npm:^18.2.17"
-    "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
-    "@typescript-eslint/parser": "npm:^6.14.0"
-    "@vitejs/plugin-react-swc": "npm:^3.5.0"
-    eslint: "npm:^8.55.0"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.5"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
-    vite: "npm:^5.0.8"
-  languageName: unknown
-  linkType: soft
-
-"app2@workspace:packages/app2":
-  version: 0.0.0-use.local
-  resolution: "app2@workspace:packages/app2"
-  languageName: unknown
-  linkType: soft
-
 "argparse@npm:^2.0.1":
   version: 2.0.1
   resolution: "argparse@npm:2.0.1"
@@ -2051,6 +2026,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nextjs@workspace:packages/nextjs":
+  version: 0.0.0-use.local
+  resolution: "nextjs@workspace:packages/nextjs"
+  languageName: unknown
+  linkType: soft
+
 "node-gyp@npm:latest":
   version: 10.0.1
   resolution: "node-gyp@npm:10.0.1"
@@ -2544,6 +2525,25 @@ __metadata:
   checksum: 10c0/487988b0a19c654ff3e1961b87f471702e708fa8a8dd02a298ef16da7206692e8552a0250e8b3e8759270f62e9d8314616f6da274734d3b558b1fc7b7724e892
   languageName: node
   linkType: hard
+
+"todolist@workspace:packages/todolist":
+  version: 0.0.0-use.local
+  resolution: "todolist@workspace:packages/todolist"
+  dependencies:
+    "@types/react": "npm:^18.2.43"
+    "@types/react-dom": "npm:^18.2.17"
+    "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
+    "@typescript-eslint/parser": "npm:^6.14.0"
+    "@vitejs/plugin-react-swc": "npm:^3.5.0"
+    eslint: "npm:^8.55.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.5"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.2.2"
+    vite: "npm:^5.0.8"
+  languageName: unknown
+  linkType: soft
 
 "ts-api-utils@npm:^1.0.1":
   version: 1.0.3
