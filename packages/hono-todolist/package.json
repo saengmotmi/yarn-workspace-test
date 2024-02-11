@@ -1,7 +1,10 @@
 {
+  "name": "hono-todolist",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "type:gen": "supabase gen types typescript --project-id oseloeutciivoksawmvh > database.types.ts",
+    "login:supabase": "supabase login"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.3",

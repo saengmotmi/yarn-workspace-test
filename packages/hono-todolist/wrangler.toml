@@ -16,3 +16,9 @@ compatibility_date = "2023-12-01"
 # binding = "DB"
 # database_name = "my-database"
 # database_id = ""
+
+node_compat = true
+
+[dev]
+port = 8080
+local_protocol = "http"

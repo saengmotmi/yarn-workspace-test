@@ -1,13 +1,7 @@
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  image: string;
-}
+import { Tables } from "hono-todolist/database.types";
 
-export type LoginUserDTO = Pick<User, "username" | "email">;
+export type User = Tables<"users">;
+
+export type LoginUserDTO = Pick<User, "email" | "password">;
 
 export type CreateUserDTO = Omit<User, "id">;

@@ -7,6 +7,7 @@ import {
 
 import Login from "@/pages/login";
 import Todos from "@/pages/todos";
+import SignUp from "@/pages/signup";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,7 +18,8 @@ const router = createBrowserRouter(
         loader={Todos.loader}
         action={Todos.action}
       />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login />} action={Login.action} />
+      <Route path="/signup" element={<SignUp />} action={SignUp.action} />
     </>
   )
 );
