@@ -11,7 +11,12 @@ import Todos from "@/pages/todos";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Todos />} loader={Todos.loader} />
+      <Route
+        path="/"
+        element={<Todos />}
+        loader={Todos.loader}
+        action={Todos.action}
+      />
       <Route path="/login" element={<Login />} />
     </>
   )
