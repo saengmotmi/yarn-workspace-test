@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import Login from "@/pages/login";
-import Todos from "@/pages/todos";
+import Tasks from "@/pages/tasks";
 import SignUp from "@/pages/signup";
 
 const router = createBrowserRouter(
@@ -14,9 +14,9 @@ const router = createBrowserRouter(
     <>
       <Route
         path="/"
-        element={<Todos />}
-        loader={Todos.loader}
-        action={Todos.action}
+        element={<Tasks />}
+        loader={Tasks.loader}
+        action={Tasks.action}
       />
       <Route path="/login" element={<Login />} action={Login.action} />
       <Route path="/signup" element={<SignUp />} action={SignUp.action} />

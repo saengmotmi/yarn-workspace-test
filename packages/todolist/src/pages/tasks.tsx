@@ -1,11 +1,11 @@
-import { createTodo, deleteTodo, getTodos } from "@/entities/todos/api";
-import { Todo } from "@/entities/todos/model";
+import { createTask, deleteTask, getTasks } from "@/entities/tasks/api";
+import { Task } from "@/entities/tasks/model";
 import { ActionFunctionArgs, Form, useLoaderData } from "react-router-dom";
 
 export const loader = async () => {
-  const { todos } = await getTodos();
+  const { data } = await getTasks();
 
-  return todos;
+  return data || [];
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -13,16 +13,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     case "POST":
       const createForm = await request.formData();
 
-      return createTodo({
-        todo: createForm.get("todo") as string,
+      return createTask({
         completed: false,
-        userId: 1,
+        due_date: null,
+        task_name: createForm.get("task_name") as string,
       });
     case "DELETE":
       const deleteForm = await request.formData();
       const id = deleteForm.get("id") as string;
 
-      return deleteTodo(id);
+      return deleteTask(id);
 
     default: {
       throw new Response("", { status: 405 });
@@ -30,22 +30,22 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-const Todos = () => {
-  const todos = useLoaderData() as Todo[];
+const Tasks = () => {
+  const task = useLoaderData() as Task[];
 
   return (
     <div>
-      <h1>Todos</h1>
+      <h1>Tasks</h1>
       <Form action="/" method="POST">
-        <input type="text" name="todo" />
+        <input type="text" name="task_name" />
         <button type="submit">Add</button>
       </Form>
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
+        {task.map((task) => (
+          <li key={task.id}>
             <Form action="/" method="DELETE">
-              <span>{todo.todo}</span>
-              <button type="submit" name="id" value={todo.id}>
+              <span>{task.task_name}</span>
+              <button type="submit" name="id" value={task.id}>
                 -
               </button>
             </Form>
@@ -56,7 +56,7 @@ const Todos = () => {
   );
 };
 
-export default Todos;
+export default Tasks;
 
-Todos.loader = loader;
-Todos.action = action;
+Tasks.loader = loader;
+Tasks.action = action;

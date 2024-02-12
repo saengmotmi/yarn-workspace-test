@@ -1,7 +1,13 @@
 import { Tables } from "hono-todolist/database.types";
+import type { Session } from "@supabase/supabase-js";
 
 export type User = Tables<"users">;
 
-export type LoginUserDTO = Pick<User, "email" | "password">;
+export type UserSession = {
+  data: {
+    user: Session["user"];
+    session: Session;
+  };
+};
 
-export type CreateUserDTO = Omit<User, "id">;
+export type AuthUserDTO = Pick<User, "email" | "password">;

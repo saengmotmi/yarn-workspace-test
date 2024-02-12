@@ -6,12 +6,12 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     case "POST":
       const loginForm = await request.formData();
 
-      console.log(loginForm);
-
-      return getAuthMe({
+      const { data } = await getAuthMe({
         email: loginForm.get("email") as string,
         password: loginForm.get("password") as string,
       });
+      localStorage.setItem("token", data.session.access_token);
+      return data;
 
     default: {
       throw new Response("", { status: 405 });
