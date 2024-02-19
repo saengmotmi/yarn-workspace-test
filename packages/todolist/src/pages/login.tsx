@@ -1,5 +1,5 @@
 import { getAuthMe } from "@/entities/users/api";
-import { ActionFunctionArgs, Form } from "react-router-dom";
+import { ActionFunctionArgs, Form, redirect } from "react-router-dom";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   switch (request.method) {
@@ -11,8 +11,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         password: loginForm.get("password") as string,
       });
       localStorage.setItem("token", data.session.access_token);
-      return data;
 
+      return redirect("/");
     default: {
       throw new Response("", { status: 405 });
     }

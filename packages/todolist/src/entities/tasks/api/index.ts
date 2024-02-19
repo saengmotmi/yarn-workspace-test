@@ -3,9 +3,11 @@ import { CreateTaskDTO, Task } from "../model";
 import { TaskBaseUrl } from "./const";
 
 export const getTasks = () => {
-  return fetch(TaskBaseUrl).then((res) => res.json()) as Promise<
-    { data: Task[] } & PageMeta
-  >;
+  return fetch(TaskBaseUrl, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }).then((res) => res.json()) as Promise<{ data: Task[] } & PageMeta>;
 };
 
 export const createTask = (task: CreateTaskDTO): Promise<Task> => {
