@@ -1,11 +1,20 @@
+import { Context } from "hono";
 import { app } from "./bootstrap";
 import { getSupabaseClient } from "./utils";
+
+const getUser = async (
+  supabase: ReturnType<typeof getSupabaseClient>,
+  c: Context
+) => {
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader?.split(" ")[1]);
+  return user;
+};
 
 app.get("/tasks", async (c) => {
   const supabase = getSupabaseClient(c);
 
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader);
+  const user = await getUser(supabase, c);
 
   const { data, error } = await supabase
     .from("tasks")
@@ -22,8 +31,7 @@ app.post("/tasks/add", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader);
+  const user = await getUser(supabase, c);
 
   const { data, error } = await supabase
     .from("tasks")
@@ -38,8 +46,7 @@ app.post("/tasks/add", async (c) => {
 app.delete("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader);
+  const user = await getUser(supabase, c);
 
   const { data, error } = await supabase
     .from("tasks")
@@ -56,8 +63,7 @@ app.put("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader);
+  const user = await getUser(supabase, c);
 
   const { data, error } = await supabase
     .from("tasks")
@@ -74,8 +80,7 @@ app.patch("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader);
+  const user = await getUser(supabase, c);
 
   const { data, error } = await supabase
     .from("tasks")
