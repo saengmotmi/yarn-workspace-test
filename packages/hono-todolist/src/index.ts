@@ -4,7 +4,13 @@ import { getSupabaseClient } from "./utils";
 app.get("/tasks", async (c) => {
   const supabase = getSupabaseClient(c);
 
-  const { data, error } = await supabase.from("tasks").select("*");
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader);
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .match({ user_id: user.data.user?.id });
 
   if (error) {
     return c.json({ error: error.message });
@@ -16,8 +22,12 @@ app.post("/tasks/add", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader);
 
-  const { data, error } = await supabase.from("tasks").insert([body]);
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert([{ ...body, user_id: user.data.user }]);
 
   if (error) {
     return c.json({ error: error.message });
@@ -28,10 +38,13 @@ app.post("/tasks/add", async (c) => {
 app.delete("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader);
+
   const { data, error } = await supabase
     .from("tasks")
     .delete()
-    .match({ id: c.req.param("id") });
+    .match({ id: c.req.param("id"), user_id: user.data.user?.id });
 
   if (error) {
     return c.json({ error: error.message });
@@ -43,10 +56,12 @@ app.put("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader);
 
   const { data, error } = await supabase
     .from("tasks")
-    .update(body)
+    .update({ ...body, user_id: user.data.user?.id })
     .match({ id: c.req.param("id") });
 
   if (error) {
@@ -59,11 +74,13 @@ app.patch("/tasks/:id", async (c) => {
   const supabase = getSupabaseClient(c);
 
   const body = await c.req.json();
+  const authHeader = c.req.header("Authorization");
+  const user = await supabase.auth.getUser(authHeader);
 
   const { data, error } = await supabase
     .from("tasks")
     .upsert(body)
-    .match({ id: c.req.param("id") });
+    .match({ id: c.req.param("id"), user_id: user.data.user?.id });
 
   if (error) {
     return c.json({ error: error.message });

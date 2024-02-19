@@ -7,9 +7,11 @@ export const getSupabaseClient = (c: Context) => {
   const SUPABASE_ANON_KEY = env(c).SUPABASE_ANON_KEY;
   const authHeader = c.req.header("Authorization");
 
-  return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     ...(authHeader && {
       global: { headers: { Authorization: authHeader } },
     }),
   });
+
+  return client;
 };
