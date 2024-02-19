@@ -35,7 +35,7 @@ app.post("/tasks/add", async (c) => {
 
   const { data, error } = await supabase
     .from("tasks")
-    .insert([{ ...body, user_id: user.data.user }]);
+    .insert([{ ...body, user_id: user.data.user?.id }]);
 
   if (error) {
     return c.json({ error: error.message });
