@@ -1,22 +1,10 @@
-import { Context } from "hono";
 import { app } from "./bootstrap";
 import { getSupabaseClient } from "./utils";
 
-const getUser = async (
-  supabase: ReturnType<typeof getSupabaseClient>,
-  c: Context
-) => {
-  const authHeader = c.req.header("Authorization");
-  const user = await supabase.auth.getUser(authHeader?.split(" ")[1]);
-  return user;
-};
-
 app.get("/tasks", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
-  const user = await getUser(supabase, c);
-
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("tasks")
     .select("*")
     .match({ user_id: user.data.user?.id });
@@ -28,14 +16,14 @@ app.get("/tasks", async (c) => {
 });
 
 app.post("/tasks/add", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
   const body = await c.req.json();
-  const user = await getUser(supabase, c);
 
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("tasks")
-    .insert([{ ...body, user_id: user.data.user?.id }]);
+    .insert([{ ...body, user_id: user.data.user?.id }])
+    .select();
 
   if (error) {
     return c.json({ error: error.message });
@@ -44,14 +32,13 @@ app.post("/tasks/add", async (c) => {
 });
 
 app.delete("/tasks/:id", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
-  const user = await getUser(supabase, c);
-
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("tasks")
     .delete()
-    .match({ id: c.req.param("id"), user_id: user.data.user?.id });
+    .match({ id: c.req.param("id"), user_id: user.data.user?.id })
+    .select();
 
   if (error) {
     return c.json({ error: error.message });
@@ -60,15 +47,15 @@ app.delete("/tasks/:id", async (c) => {
 });
 
 app.put("/tasks/:id", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
   const body = await c.req.json();
-  const user = await getUser(supabase, c);
 
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("tasks")
     .update({ ...body, user_id: user.data.user?.id })
-    .match({ id: c.req.param("id") });
+    .match({ id: c.req.param("id"), user_id: user.data.user?.id })
+    .select();
 
   if (error) {
     return c.json({ error: error.message });
@@ -77,15 +64,15 @@ app.put("/tasks/:id", async (c) => {
 });
 
 app.patch("/tasks/:id", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
   const body = await c.req.json();
-  const user = await getUser(supabase, c);
 
-  const { data, error } = await supabase
+  const { data, error } = await client
     .from("tasks")
-    .upsert(body)
-    .match({ id: c.req.param("id"), user_id: user.data.user?.id });
+    .update({ ...body, user_id: user.data.user?.id })
+    .match({ id: c.req.param("id"), user_id: user.data.user?.id })
+    .select();
 
   if (error) {
     return c.json({ error: error.message });
@@ -94,11 +81,11 @@ app.patch("/tasks/:id", async (c) => {
 });
 
 app.post("/users/signup", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client, user } = await getSupabaseClient(c);
 
   const body = await c.req.json();
 
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await client.auth.signUp({
     email: body.email,
     password: body.password,
   });
@@ -110,11 +97,11 @@ app.post("/users/signup", async (c) => {
 });
 
 app.post("/users/login", async (c) => {
-  const supabase = getSupabaseClient(c);
+  const { client } = await getSupabaseClient(c);
 
   const body = await c.req.json();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await client.auth.signInWithPassword({
     email: body.email,
     password: body.password,
   });
